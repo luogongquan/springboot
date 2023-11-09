@@ -15,7 +15,7 @@ class SpringbootApplicationTests {
         SaveDo saveDo = new SaveDo();
         saveDo.setName("zhangsan");
         saveDo.setId(22);
-        recordService.save(saveDo);
+      //  recordService.save(saveDo);
         System.out.println(1123131);
     }
 

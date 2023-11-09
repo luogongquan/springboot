@@ -63,10 +63,13 @@ public class WordUtil {
             response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);
             OutputStream out = response.getOutputStream();
             doc.write(out);
+            fos.close();
+            doc.close();
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+
             delFileWord(temDir,fileName);//这一步看具体需求，要不要删
         }
 
@@ -80,5 +83,35 @@ public class WordUtil {
         File file1 = new File(filePath);
         file.delete();
         file1.delete();
+      //  delAllFile(file1);
     }
+
+    /**
+     * 删除文件夹/文件
+     *
+     * @param directory 要被删除的文件夹
+     */
+    public static void delAllFile(File directory) {
+        if (!directory.isDirectory()) {
+            directory.delete();
+        } else {
+            File[] files = directory.listFiles();
+            // 空文件夹
+            if (files.length == 0) {
+                directory.delete();
+                return;
+            }
+            // 删除子文件夹和子文件
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    delAllFile(file);
+                } else {
+                    file.delete();
+                }
+            }
+            // 删除文件夹自己
+            directory.delete();
+        }
+    }
+
 }

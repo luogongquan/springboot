@@ -80,5 +80,55 @@ public class ExportWordController extends ExportCommonService {
         //导出word
         WordUtil.exportWord(templatePath, temDir, fileName, params, request, response);
     }
+
+    /**
+     * easypoi导出word
+     */
+    @GetMapping("word/alram")
+    public void alram(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        String templatePath = "template/alarmMould.docx"; //模板路径
+        HashMap<String, Object> obj = new HashMap<>();
+        obj.put("carCount","1000123");
+        obj.put("cartboxOnlineCountCount","874");
+        obj.put("onlineRate","80%");
+        obj.put("tripDistanceCount","2131235423");
+        obj.put("averageVehicleMileage","123123");
+        HashMap<String, Object> obj2 = new HashMap<>();
+        obj2.put("recordTotal","1000123");
+        obj2.put("recordTotalLow","11111");
+        obj2.put("recordTotalMedium","22222");
+        obj2.put("recordTotalHigh","333333");
+        obj2.put("handleRate","12.00%");
+        obj2.put("chainAdd","23.12%");
+        //简单渲染文本
+        params.put("carStatDailyInfo",obj);
+        params.put("alarmEventCountInfo",obj2);
+        //添加
+
+        ImageEntity image = new ImageEntity();
+        image.setHeight(150);
+        image.setWidth(250);
+        image.setData(PieChartGenerator.generatePieChart());
+        image.setType(ImageEntity.Data);
+        params.put("image",image);
+
+
+        String temDir="D:/mimi/"+ File.separator+"file/word/"; ;//生成临时文件存放地址
+        //生成文件名
+        Long time = new Date().getTime();
+        // 生成的word格式
+        String formatSuffix = ".docx";
+        // 拼接后的文件名
+        String fileName = time + formatSuffix;//文件名  带后缀
+        //导出word
+        WordUtil.exportWord(templatePath, temDir, fileName, params, request, response);
+    }
+
+    @GetMapping("getPath")
+    public String getPath(){
+        String property = System.getProperty("user.dir");
+        return property;
+    }
 }
 
